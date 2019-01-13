@@ -92,10 +92,11 @@ void quickSort(int arr[], int arrLen) {
  * Help functions below
  */
 void displayArr(int arr[], int arrLen) {
+    printf("[");
     for (int i = 0; i < arrLen; i++) {
-        printf("%d ", arr[i]);
+        printf("%d, ", arr[i]);
     }
-    printf("\n");
+    printf("]\n");
 }
 
 void swap(int *a, int *b) {
