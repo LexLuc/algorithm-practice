@@ -8,12 +8,14 @@ typedef struct _SortStatistics {
     int swapTimes;
     int comparisonTimes;
     int recursionTimes;
+    int recursionDepth;
 } SortStatistics;
 
 SortStatistics *initStatistics() {
     SortStatistics *stat = malloc(sizeof(struct _SortStatistics));
     stat->comparisonTimes = 0;
     stat->recursionTimes = 0;
+    stat->recursionDepth = 0;
     stat->swapTimes = 0;
 
     return stat;
@@ -24,6 +26,7 @@ void showStatistics(SortStatistics *stat) {
     printf("***\tSwapping times:  %d\t***\n", stat->swapTimes);
     printf("***\tComparison times: %d\t***\n", stat->comparisonTimes);
     printf("***\tRecursion times: %d\t***\n", stat->recursionTimes);    
+    printf("***\tRecursion depth: %d\t***\n", stat->recursionDepth);    
     printf("***\t********************\t***\n");
 }
 
@@ -53,10 +56,12 @@ void bubbleSort(int arr[], int arrLen) {
 }
 
 
-void quickSortRec(int arr[], int low, int high, SortStatistics *stat) {
-    if (low >= high)
+void quickSortRec(int arr[], int low, int high, SortStatistics *stat, int recDepth) {
+    if (low >= high) {
+        stat->recursionDepth = recDepth;
         return;
-
+    }
+        
     // partition:
     int pivot = arr[high];
     int i = low-1;
@@ -70,16 +75,15 @@ void quickSortRec(int arr[], int low, int high, SortStatistics *stat) {
     swap(&arr[++i], &arr[high]);
 
     // continue quicksort recursively:
-    quickSortRec(arr, low, i-1, stat);
-    quickSortRec(arr, i+1, high, stat);
+    quickSortRec(arr, low, i-1, stat, recDepth+1);
+    quickSortRec(arr, i+1, high, stat, recDepth+1);
     stat->recursionTimes ++;
-
 }
 
 void quickSort(int arr[], int arrLen) {
     SortStatistics *stat = initStatistics();
 
-    quickSortRec(arr, 0, arrLen-1, stat);
+    quickSortRec(arr, 0, arrLen-1, stat, 0);
 
     showStatistics(stat);
     free(stat);
@@ -108,13 +112,15 @@ void merge(int arr[], int low, int mid, int high, SortStatistics *stat) {
     free(mergedSubArr);
 }
 
-void mergeSortRec(int arr[], int low, int high, SortStatistics *stat) {
-    if (low >= high) 
+void mergeSortRec(int arr[], int low, int high, SortStatistics *stat, int recDepth) {
+    if (low >= high) {
+        stat->recursionDepth = recDepth;
         return;
+    }
 
     int mid = (low + high) /2;
-    mergeSortRec(arr, low, mid, stat);
-    mergeSortRec(arr, mid+1, high, stat);
+    mergeSortRec(arr, low, mid, stat, recDepth+1);
+    mergeSortRec(arr, mid+1, high, stat, recDepth+1);
     merge(arr, low, mid, high, stat);
 
     stat->recursionTimes ++;
@@ -123,7 +129,7 @@ void mergeSortRec(int arr[], int low, int high, SortStatistics *stat) {
 void mergeSort(int arr[], int arrLen) {
     SortStatistics *stat = initStatistics();
 
-    mergeSortRec(arr, 0, arrLen-1, stat);
+    mergeSortRec(arr, 0, arrLen-1, stat, 0);
 
     showStatistics(stat);
     free(stat);
