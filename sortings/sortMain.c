@@ -36,7 +36,11 @@ int main(int argc, char *argv[]) {
 
     } else if (strcmp(argv[1], "--merge") == 0) {
         // merge sort:
-        fprintf(stderr, "Not implemented yet!\n");
+        printf("Merge sort start!\n");
+        displayArr(arr, arrLen);
+        mergeSort(arr, arrLen);
+        displayArr(arr, arrLen);
+        printf("Merge sort finished!\n");
     } else {
         // unkown sorting type:
         fprintf(stderr, "Unknow sorting type or unrecogized pattern \"%s\"!\n", argv[1]);

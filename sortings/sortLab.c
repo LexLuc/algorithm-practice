@@ -4,7 +4,6 @@
 /**
  * ADT for statistics of sorting algorithms
  */
-
 typedef struct _SortStatistics {
     int swapTimes;
     int comparisonTimes;
@@ -32,7 +31,6 @@ void showStatistics(SortStatistics *stat) {
 /**
  * Sorting Zoo below
  */
-
 void bubbleSort(int arr[], int arrLen) {
     SortStatistics *stat = initStatistics();
 
@@ -87,16 +85,60 @@ void quickSort(int arr[], int arrLen) {
     free(stat);
 }
 
+void merge(int arr[], int low, int mid, int high, SortStatistics *stat) {
+    int mergedSubArrLen = high - low + 1;
+    int *mergedSubArr = malloc(sizeof(int) * mergedSubArrLen);
+
+    for (int i = low, j = mid + 1, k = 0; k < mergedSubArrLen; k++) {
+        if (i > mid) {
+            mergedSubArr[k] = arr[j++];
+        } else if (j > high) {
+            mergedSubArr[k] = arr[i++];
+        } else if (arr[i] < arr[j]) {
+            mergedSubArr[k] = arr[i++];
+        } else {
+            mergedSubArr[k] = arr[j++];
+        }
+        stat->comparisonTimes ++;
+    }
+
+    for (int i = low, k = 0; k < mergedSubArrLen; k++, i++) {
+        arr[i] = mergedSubArr[k];
+    }
+    free(mergedSubArr);
+}
+
+void mergeSortRec(int arr[], int low, int high, SortStatistics *stat) {
+    if (low >= high) 
+        return;
+
+    int mid = (low + high) /2;
+    mergeSortRec(arr, low, mid, stat);
+    mergeSortRec(arr, mid+1, high, stat);
+    merge(arr, low, mid, high, stat);
+
+    stat->recursionTimes ++;
+}
+
+void mergeSort(int arr[], int arrLen) {
+    SortStatistics *stat = initStatistics();
+
+    mergeSortRec(arr, 0, arrLen-1, stat);
+
+    showStatistics(stat);
+    free(stat);
+}
+
 
 /**
  * Help functions below
  */
 void displayArr(int arr[], int arrLen) {
     printf("[");
-    for (int i = 0; i < arrLen; i++) {
+    for (int i = 0; i < arrLen-1; i++) {
         printf("%d, ", arr[i]);
     }
-    printf("]\n");
+    printf("%d]\n", arr[arrLen-1]);
 }
 
 void swap(int *a, int *b) {
