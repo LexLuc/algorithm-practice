@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
         displayArr(arr, arrLen);
         printf("Merge sort finished!\n");
     } else {
-        // unkown sorting type:
+        // unknow sorting type:
         fprintf(stderr, "Unknow sorting type or unrecogized pattern \"%s\"!\n", argv[1]);
     }
 
