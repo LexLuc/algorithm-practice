@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
 
 			case 'r':
 				// remove node from BST:
-				fprintf(stderr, "Not implemented yet! Try other options\n");
+				fprintf(stderr, "Not implemented yet! Try other operations\n");
 				break;
 			case 'd':
 				// display structure of BST:
@@ -59,19 +59,19 @@ int main(int argc, char *argv[]) {
 				break;
 			case 'e':
 				// pre-order traversal on BST
-				fprintf(stderr, "Not implemented yet! Try other options\n");
+				fprintf(stderr, "Not implemented yet! Try other operations\n");
 				break;
 			case 'n':
 				// in-order traversal on BST
-				fprintf(stderr, "Not implemented yet! Try other options\n");
+				fprintf(stderr, "Not implemented yet! Try other operations\n");
 				break;
 			case 'o':
 				// post-order traversal on BST
-				fprintf(stderr, "Not implemented yet! Try other options\n");
+				fprintf(stderr, "Not implemented yet! Try other operations\n");
 				break;
 			case 'l':
 				// level-order traversal on BST
-				fprintf(stderr, "Not implemented yet! Try other options\n");
+				fprintf(stderr, "Not implemented yet! Try other operations\n");
 				break;
 			case 'q':
 				// exit the program
@@ -89,8 +89,11 @@ int main(int argc, char *argv[]) {
  */
 int readKey() {
 	int key;
-	printf("Expect an integer as key: ");
-	scanf("%d", &key);
+	do {
+		printf("Expect an non-negative integer as key: ");
+		scanf("%d", &key);
+	} while (key < 0);
+
 	return key;
 }
 
