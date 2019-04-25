@@ -4,7 +4,7 @@
 #include "queue.h"
 
 typedef struct Node {
-	int value;
+	void *value;
 	struct Node *next;
 } nodeType;
 
@@ -41,7 +41,7 @@ void dropQueue(Queue Q) {
 }
 
 // add new element at the end of the Queue:
-void enqueue(Queue Q, int data) {
+void enqueue(Queue Q, void *data) {
 	nodeType *newNode = malloc(sizeof(nodeType));	assert(newNode != NULL);
 	newNode->value = data;
 	newNode->next = NULL;
@@ -56,10 +56,10 @@ void enqueue(Queue Q, int data) {
 }
 
 // remove the element at the beginning of the Queue:
-int dequeue(Queue Q) {
+void *dequeue(Queue Q) {
 	assert(Q->length > 0);
 	nodeType *node = Q->head; 	// get node to be dequeued
-	int data = node->value;		// get value of such node
+	void *data = node->value;	// get value of such node
 	Q->head = Q->head->next;	// head point to next node
 	if (Q->head == NULL)
 		Q->tail = NULL;
@@ -73,11 +73,12 @@ int getLength(Queue Q) {
 	return Q->length;
 }
 
-void showQueue(Queue Q) {
+void showQueue(Queue Q, void (*unpackValue)(void *value)) {
 	printf("Show Queue:\nHead->");
 	nodeType *node;
 	for (node = Q->head; node != NULL; node = node->next)
-		printf("-%d-", node->value);
+		//printf("-%d-", node->value);
+		unpackValue(node->value);
 	printf("<-Tail\n\n");
 }
 

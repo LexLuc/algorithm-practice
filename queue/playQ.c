@@ -1,26 +1,48 @@
 #include <stdio.h>
 #include "queue.h"
 
+#define LENGTH 10
+
+/**
+ * Unpack the node value pointer to the real value:
+ * Node value is the pointer of integer in this case
+ */
+void unpackValue(void *value) {
+	printf("-%d-", *(int *)value);
+}
+
 int main(void) {
-	queue Q = newQueue();
-	printf("\nis empty? %s\n", queueIsEmpty(Q)?"True":"False");
-	showQueue(Q);
+	Queue Q = newQueue();
+	printf("\nis empty? %s\n", queueIsEmpty(Q) ? "True" : "False");
+	showQueue(Q, &unpackValue);
+
+	int i;
+
+	printf("Preparing data:\n");
+	int data[LENGTH];
+	for (i = 0; i < LENGTH; i++) {
+		data[i] = i;
+		printf("%d ", data[i]);
+	}
+	putchar(10);
 	
 	printf("\nEnqueuing:\n");
-	int i;
-	for (i = 0; i < 10; i++) {
-		enqueue(Q, i);
-		showQueue(Q);
+
+	for (i = 0; i < LENGTH; i++) {
+		enqueue(Q, data + i);
+		showQueue(Q, &unpackValue);
 	}
 	
-	printf("\nis empty? %s\n", queueIsEmpty(Q)?"True":"False");
+	printf("\nis empty? %s\n", queueIsEmpty(Q) ? "True" : "False");
 	
 	printf("\nDequeuing:\n");\
-	for (i = 0; i < 10; i++) {
-		int data = dequeue(Q);
-		printf("\nelement dequeued: %d", data);
-		showQueue(Q);
+	for (i = 0; i < LENGTH; i++) {
+		int *dataPtr = (int *)dequeue(Q);
+		printf("\nelement dequeued: %d\n", *dataPtr);
+		showQueue(Q, &unpackValue);
 	}
+
+	printf("\nis empty? %s\n", queueIsEmpty(Q) ? "True" : "False");
 	
 	dropQueue(Q);
 	
